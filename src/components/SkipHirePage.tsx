@@ -28,107 +28,52 @@ import { SkipCard } from './skip-card';
 import { TrustIndicators } from './trust-indicators';
 import { Button } from './ui/button';
 
-const skipData: Skip[] = [
-  {
-    id: 17933,
-    size: 4,
-    hire_period_days: 14,
-    price_before_vat: 278,
-    vat: 20,
-    allowed_on_road: true,
-    allows_heavy_waste: true,
-    popular: false,
-    capacity: "30-40 bin bags",
-    ideal_for: "Small home projects",
-  },
-  {
-    id: 17934,
-    size: 6,
-    hire_period_days: 14,
-    price_before_vat: 305,
-    vat: 20,
-    allowed_on_road: true,
-    allows_heavy_waste: true,
-    popular: true,
-    capacity: "50-60 bin bags",
-    ideal_for: "Kitchen renovations",
-  },
-  {
-    id: 17935,
-    size: 8,
-    hire_period_days: 14,
-    price_before_vat: 375,
-    vat: 20,
-    allowed_on_road: true,
-    allows_heavy_waste: true,
-    popular: false,
-    capacity: "70-80 bin bags",
-    ideal_for: "Bathroom renovations",
-  },
-  {
-    id: 17936,
-    size: 10,
-    hire_period_days: 14,
-    price_before_vat: 400,
-    vat: 20,
-    allowed_on_road: false,
-    allows_heavy_waste: false,
-    popular: false,
-    capacity: "90-100 bin bags",
-    ideal_for: "Large home projects",
-  },
-  {
-    id: 17937,
-    size: 12,
-    hire_period_days: 14,
-    price_before_vat: 439,
-    vat: 20,
-    allowed_on_road: false,
-    allows_heavy_waste: false,
-    popular: false,
-    capacity: "110-120 bin bags",
-    ideal_for: "Commercial projects",
-  },
-  {
-    id: 17938,
-    size: 14,
-    hire_period_days: 14,
-    price_before_vat: 470,
-    vat: 20,
-    allowed_on_road: false,
-    allows_heavy_waste: false,
-    popular: false,
-    capacity: "130-140 bin bags",
-    ideal_for: "Large commercial work",
-  },
-]
-
 const steps: Step[] = [
   { id: 1, name: "Location", icon: MapPin, completed: true },
   { id: 2, name: "Waste Type", icon: Trash2, completed: true },
   { id: 3, name: "Skip Size", icon: Truck, completed: false, current: true },
   { id: 4, name: "Permits", icon: Shield, completed: false },
   { id: 5, name: "Schedule", icon: Calendar, completed: false },
-]
+];
 
 const SkipHirePage: React.FC = () => {
-  const { selectedSkip, selectSkip, calculateTotalPrice } = useSkipSelection(6)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { selectedSkip, selectSkip, calculateTotalPrice } = useSkipSelection(6);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchedSkipData, setFetchedSkipData] = useState<Skip[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
+    setIsLoaded(true);
+    const fetchSkips = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: Skip[] = await response.json();
+        setFetchedSkipData(data);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSkips();
+  }, []);
 
   const handleContinue = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     // Simulate API call or navigation
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsLoading(false)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsLoading(false);
     // Add your actual navigation or API call here
-  }
+  };
 
-  const selectedSkipData = skipData.find((skip) => skip.size === selectedSkip)
+  const skipDataToDisplay = fetchedSkipData.length > 0 ? fetchedSkipData : [];
+  const selectedSkipData = skipDataToDisplay.find((skip) => skip.size === selectedSkip);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 relative overflow-hidden">
@@ -152,10 +97,6 @@ const SkipHirePage: React.FC = () => {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6">
               Choose Your Perfect Skip
             </h1>
-            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              Select from our premium range of skip sizes, each designed to handle your specific project needs with
-              <span className="font-semibold text-blue-700"> professional service guaranteed</span>
-            </p>
           </div>
 
           <div className="mt-8">
@@ -164,18 +105,25 @@ const SkipHirePage: React.FC = () => {
         </div>
 
         {/* Skip Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 mb-12 sm:mb-16">
-          {skipData.map((skip, index) => (
-            <SkipCard
-              key={skip.id}
-              skip={skip}
-              isSelected={selectedSkip === skip.size}
-              onSelect={selectSkip}
-              calculateTotalPrice={calculateTotalPrice}
-              animationDelay={index * 100}
-            />
-          ))}
-        </div>
+        {isLoading && <p className="text-center text-slate-600">Loading skip options...</p>}
+        {error && <p className="text-center text-red-600">Error loading skips: {error}</p>}
+        {!isLoading && !error && skipDataToDisplay.length === 0 && (
+          <p className="text-center text-slate-600">No skip options available for this location.</p>
+        )}
+        {!isLoading && !error && skipDataToDisplay.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 mb-12 sm:mb-16">
+            {skipDataToDisplay.map((skip, index) => (
+              <SkipCard
+                key={skip.id}
+                skip={skip}
+                isSelected={selectedSkip === skip.size}
+                onSelect={selectSkip}
+                calculateTotalPrice={calculateTotalPrice}
+                animationDelay={index * 100}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Selected Skip Summary */}
         {selectedSkipData && (
@@ -229,7 +177,7 @@ const SkipHirePage: React.FC = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SkipHirePage
+export default SkipHirePage;

@@ -25,12 +25,8 @@ This project is a redesign of the skip hire selection page for REMWaste, focusin
 - Accessible color contrast
 - Interactive hover and focus states
 
-### 3. Skip Selection Process
-- Step-by-step booking flow
-- Real-time price calculations
-- Clear skip size comparisons
-- Visual representation of skip dimensions
-- Detailed skip specifications
+### 3. Data Integration
+- Dynamically populates skip options and pricing using data fetched from the provided API endpoint: `https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft`.
 
 ## Project Structure
 ```
