@@ -39,6 +39,16 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
     return () => clearTimeout(timer)
   }, [animationDelay])
 
+  const getSkipImageUrl = (size: number) => {
+    if (size <= 6) {
+      return "https://t3.ftcdn.net/jpg/00/42/65/80/240_F_42658037_HaGdRyE7pGNTRUblWGi4KxM95AxVLhDS.jpg"; // Small skip
+    } else if (size <= 10) {
+      return "https://t3.ftcdn.net/jpg/01/18/87/78/240_F_118877833_UnKzUpGEDkwyXbnBWu9vllzvOBlqGgOa.jpg"; // Medium skip
+    } else {
+      return "https://t4.ftcdn.net/jpg/01/86/62/45/240_F_186624584_IENpEPiJyPFev73GWAVb0PIo1IeaDLUM.jpg"; // Large skip
+    }
+  };
+
   return (
     <div
       className={`
@@ -61,7 +71,7 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
         {/* Popular Badge */}
         {skip.popular && (
           <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-blue-700 text-white px-3 py-1 shadow-md text-xs">
+            <Badge className="bg-slate-900 text-white px-3 py-1 shadow-md text-xs">
               <Star className="w-3 h-3 mr-1" />
               Most Popular
             </Badge>
@@ -71,7 +81,7 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
         {/* Selection Indicator */}
         {isSelected && (
           <div className="absolute top-3 right-3 z-10">
-            <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center shadow-md">
+            <div className="w-6 h-6 bg-slate-900 rounded-full flex items-center justify-center shadow-md">
               <CheckCircle className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -82,20 +92,18 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
           <div className="relative h-40 bg-slate-100 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent"></div>
 
-            {/* Skip Illustration */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                <div className="w-24 h-16 bg-slate-800 rounded-lg shadow-lg">
-                  <div className="absolute inset-1 bg-slate-700 rounded border border-slate-600/30"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-0.5 bg-slate-600/40 rounded"></div>
-                </div>
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-12 h-2 bg-slate-900/20 rounded-full blur-sm"></div>
-              </div>
+            {/* Skip Image */}
+            <div className="absolute inset-0 flex items-center justify-center p-4">
+              <img 
+                src={getSkipImageUrl(skip.size)}
+                alt={`${skip.size} Yard Skip`}
+                className="max-h-full max-w-full object-contain drop-shadow-md"
+              />
             </div>
 
             {/* Size Badge */}
             <div className="absolute bottom-3 left-3">
-              <Badge className="bg-white text-slate-900 font-medium px-3 py-1 shadow-sm text-sm">
+              <Badge className="bg-white text-slate-900 font-medium px-3 py-1 shadow-sm text-sm hover:bg-red-100 transition-colors duration-200">
                 {skip.size} Yard
               </Badge>
             </div>
@@ -112,18 +120,18 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-2">
               <div className="flex items-center space-x-2 text-sm">
-                <Clock className="w-4 h-4 text-blue-700 flex-shrink-0" />
+                <Clock className="w-4 h-4 text-slate-900 flex-shrink-0" />
                 <span className="text-slate-600">{skip.hire_period_days} days</span>
               </div>
               {skip.allowed_on_road && (
                 <div className="flex items-center space-x-2 text-sm">
-                  <Truck className="w-4 h-4 text-green-700 flex-shrink-0" />
+                  <Truck className="w-4 h-4 text-slate-900 flex-shrink-0" />
                   <span className="text-slate-600">Road OK</span>
                 </div>
               )}
               {skip.allows_heavy_waste && (
                 <div className="flex items-center space-x-2 text-sm">
-                  <Award className="w-4 h-4 text-purple-700 flex-shrink-0" />
+                  <Award className="w-4 h-4 text-slate-900 flex-shrink-0" />
                   <span className="text-slate-600">Heavy Waste</span>
                 </div>
               )}
@@ -153,7 +161,7 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
                 w-full h-11 font-medium transition-all duration-300 text-sm
                 ${
                   isSelected
-                    ? "bg-blue-700 hover:bg-blue-800 shadow-md"
+                    ? "bg-red-700 hover:bg-red-800 shadow-md"
                     : "bg-slate-900 hover:bg-slate-800 shadow-sm hover:shadow-md"
                 }
                 text-white border-0
@@ -165,7 +173,7 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
             >
               {isSelected ? (
                 <>
-                  <CheckCircle className="w-4 h-4 mr-2" />
+                  <CheckCircle className="w-4 h-4 mr-2 animate-pulse" />
                   Selected
                 </>
               ) : (

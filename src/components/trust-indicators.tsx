@@ -1,18 +1,27 @@
-import { Clock, Award, Zap } from "lucide-react"
+import {
+  Award,
+  Clock,
+  Zap,
+} from 'lucide-react';
 
 export function TrustIndicators() {
   const indicators = [
-    { icon: Clock, text: "Same Day Delivery", color: "text-blue-500" },
-    { icon: Award, text: "Licensed & Insured", color: "text-green-500" },
-    { icon: Zap, text: "Instant Booking", color: "text-purple-500" },
+    { icon: Clock, text: "Same Day Delivery", color: "text-slate-900" },
+    { icon: Award, text: "Licensed & Insured", color: "text-slate-900" },
+    { icon: Zap, text: "Instant Booking", color: "text-slate-900" },
   ]
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-6 sm:mt-8">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mt-8 sm:mt-12">
       {indicators.map((indicator, index) => (
-        <div key={index} className="flex items-center space-x-2 text-gray-600">
-          <indicator.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${indicator.color}`} />
-          <span className="font-medium text-sm sm:text-base">{indicator.text}</span>
+        <div 
+          key={index} 
+          className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm border border-slate-200"
+        >
+          <div className="bg-slate-100 p-2 rounded-lg">
+            <indicator.icon className={`w-5 h-5 ${indicator.color}`} />
+          </div>
+          <span className="font-medium text-slate-900">{indicator.text}</span>
         </div>
       ))}
     </div>

@@ -114,10 +114,19 @@ const steps: Step[] = [
 const SkipHirePage: React.FC = () => {
   const { selectedSkip, selectSkip, calculateTotalPrice } = useSkipSelection(6)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
   }, [])
+
+  const handleContinue = async () => {
+    setIsLoading(true)
+    // Simulate API call or navigation
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsLoading(false)
+    // Add your actual navigation or API call here
+  }
 
   const selectedSkipData = skipData.find((skip) => skip.size === selectedSkip)
 
@@ -188,9 +197,25 @@ const SkipHirePage: React.FC = () => {
             <span className="font-medium">Previous Step</span>
           </Button>
 
-          <Button className="flex items-center justify-center space-x-3 h-12 px-8 bg-blue-700 hover:bg-blue-800 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 order-1 sm:order-2">
-            <span className="font-medium">Continue to Permits</span>
-            <ArrowRight className="w-5 h-5" />
+          <Button
+            className={`
+              flex items-center justify-center space-x-3 h-12 px-8
+              ${isLoading ? "bg-red-700 hover:bg-red-800" : "bg-slate-900 hover:bg-slate-800"}
+              text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 order-1 sm:order-2 relative
+            `}
+            onClick={handleContinue}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : (
+              <>
+                <span className="font-medium">Continue to Permits</span>
+                <ArrowRight className="w-5 h-5" />
+              </>
+            )}
           </Button>
         </div>
       </div>
