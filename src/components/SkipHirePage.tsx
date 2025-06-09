@@ -21,6 +21,7 @@ import type {
   Skip,
   Step,
 } from '../types/skip';
+import FloatingSidebar from './floating-sidebar';
 import { ProgressSteps } from './progress-steps';
 import { SelectedSkipSummary } from './selected-skip-summary';
 import { SkipCard } from './skip-card';
@@ -121,37 +122,40 @@ const SkipHirePage: React.FC = () => {
   const selectedSkipData = skipData.find((skip) => skip.size === selectedSkip)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-40 h-40 sm:w-80 sm:h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-20 sm:-bottom-40 -left-20 sm:-left-40 w-40 h-40 sm:w-80 sm:h-80 bg-gradient-to-br from-green-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 relative overflow-hidden">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
       </div>
 
       {/* Progress Steps */}
-      <ProgressSteps steps={steps} />
+      <div className="relative z-10">
+        <ProgressSteps steps={steps} />
+      </div>
 
       {/* Main Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         {/* Hero Section */}
-        <div className="text-center mb-8 sm:mb-12">
+        <div className="text-center mb-12 sm:mb-16">
           <div
             className={`transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6">
               Choose Your Perfect Skip
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
               Select from our premium range of skip sizes, each designed to handle your specific project needs with
-              <span className="font-semibold text-blue-600"> professional service guaranteed</span>
+              <span className="font-semibold text-blue-700"> professional service guaranteed</span>
             </p>
           </div>
 
-          <TrustIndicators />
+          <div className="mt-8">
+            <TrustIndicators />
+          </div>
         </div>
 
         {/* Skip Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 mb-12 sm:mb-16">
           {skipData.map((skip, index) => (
             <SkipCard
               key={skip.id}
@@ -166,7 +170,7 @@ const SkipHirePage: React.FC = () => {
 
         {/* Selected Skip Summary */}
         {selectedSkipData && (
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-8 sm:mb-12">
             <SelectedSkipSummary
               skip={selectedSkipData}
               totalPrice={calculateTotalPrice(selectedSkipData.price_before_vat, selectedSkipData.vat)}
@@ -175,21 +179,30 @@ const SkipHirePage: React.FC = () => {
         )}
 
         {/* Navigation */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-6 sm:pt-8 border-t border-white/20">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-8 sm:pt-12 border-t border-slate-200">
           <Button
             variant="outline"
-            className="flex items-center justify-center space-x-3 h-12 px-6 bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 order-2 sm:order-1"
+            className="flex items-center justify-center space-x-3 h-12 px-6 bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 order-2 sm:order-1"
           >
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="font-semibold">Previous Step</span>
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium">Previous Step</span>
           </Button>
 
-          <Button className="flex items-center justify-center space-x-3 h-12 px-6 sm:px-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 order-1 sm:order-2">
-            <span className="font-semibold">Continue to Permits</span>
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Button className="flex items-center justify-center space-x-3 h-12 px-8 bg-blue-700 hover:bg-blue-800 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 order-1 sm:order-2">
+            <span className="font-medium">Continue to Permits</span>
+            <ArrowRight className="w-5 h-5" />
           </Button>
         </div>
       </div>
+
+      {/* Floating Sidebar */}
+      {selectedSkipData && (
+        <FloatingSidebar
+          skip={selectedSkipData}
+          totalPrice={calculateTotalPrice(selectedSkipData.price_before_vat, selectedSkipData.vat)}
+          steps={steps}
+        />
+      )}
     </div>
   )
 }
