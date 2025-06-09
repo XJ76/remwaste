@@ -12,6 +12,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: "all",
+    allowedHosts: ["yj4d2g-5173.csb.app"],
   },
 }) 
