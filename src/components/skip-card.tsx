@@ -61,7 +61,7 @@ export function SkipCard({ skip, isSelected, onSelect, calculateTotalPrice, anim
           relative cursor-pointer transition-all duration-300 group
           ${
             isSelected
-              ? "ring-2 ring-blue-500/30 shadow-lg bg-white"
+              ? "ring-2 ring-blue-500/30 shadow-2xl bg-white transform -translate-y-1 scale-[1.02]"
               : "hover:shadow-md bg-white"
           }
           border border-slate-200 overflow-hidden h-full

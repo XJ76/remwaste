@@ -1,5 +1,6 @@
-import { CheckCircle } from "lucide-react"
-import type { Step } from "../types/skip"
+import { CheckCircle } from 'lucide-react';
+
+import type { Step } from '../types/skip';
 
 interface ProgressStepsProps {
   steps: Step[]
@@ -15,14 +16,13 @@ export function ProgressSteps({ steps }: ProgressStepsProps) {
               <div className="flex items-center">
                 <div
                   className={`
-                    relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl 
+                    relative flex items-center justify-center rounded-xl sm:rounded-2xl 
                     transition-all duration-500 transform
-                    ${
-                      step.completed
-                        ? "bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg scale-110"
-                        : step.current
-                          ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl scale-110"
-                          : "bg-white border-2 border-gray-200 text-gray-400 shadow-sm"
+                    ${step.completed
+                      ? "w-10 h-10 sm:w-12 sm:h-12 bg-green-600 text-white shadow-md"
+                      : step.current
+                        ? "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-xl ring-2 ring-offset-2 ring-slate-400/50 animate-pulse"
+                        : "w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 border-2 border-slate-200 text-slate-500 shadow-sm"
                     }
                   `}
                 >
@@ -32,25 +32,25 @@ export function ProgressSteps({ steps }: ProgressStepsProps) {
                     <step.icon className="w-4 h-4 sm:w-6 sm:h-6" />
                   )}
                   {step.current && (
-                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 animate-ping opacity-20"></div>
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 animate-ping opacity-20"></div>
                   )}
                 </div>
                 <div className="ml-2 sm:ml-4 hidden md:block">
                   <p
                     className={`text-xs sm:text-sm font-semibold transition-colors duration-300 ${
-                      step.completed || step.current ? "text-gray-900" : "text-gray-500"
+                      step.completed ? "text-slate-800" : step.current ? "text-slate-900" : "text-slate-600"
                     }`}
                   >
                     {step.name}
                   </p>
-                  {step.current && <p className="text-xs text-blue-600 font-medium">Current Step</p>}
+                  {step.current && <p className="text-xs text-slate-700 font-medium">Current Step</p>}
                 </div>
               </div>
               {stepIdx < steps.length - 1 && (
                 <div
                   className={`
                     hidden md:block w-8 lg:w-16 xl:w-20 h-1 ml-4 sm:ml-6 rounded-full transition-all duration-500
-                    ${step.completed ? "bg-gradient-to-r from-green-500 to-emerald-500" : "bg-gray-200"}
+                    ${step.completed ? "bg-green-500" : "bg-slate-200"}
                   `}
                 />
               )}
@@ -64,8 +64,8 @@ export function ProgressSteps({ steps }: ProgressStepsProps) {
             (step) =>
               step.current && (
                 <div key={step.id}>
-                  <p className="text-sm font-semibold text-gray-900">{step.name}</p>
-                  <p className="text-xs text-blue-600 font-medium">Current Step</p>
+                  <p className="text-sm font-semibold text-slate-900">{step.name}</p>
+                  <p className="text-xs text-slate-700 font-medium">Current Step</p>
                 </div>
               ),
           )}
